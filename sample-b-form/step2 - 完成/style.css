@@ -1,0 +1,318 @@
+/* ==========================================================
+   デザイントークン（カスタムプロパティ）
+   ========================================================== */
+:root {
+  /* 文字色 */
+  --text-primary: #1b1b1b;
+  --text-secondary: #4e4e4e;
+  --text-inactive: #9c9c9c;
+  --text-link: #0069c2;
+
+  /* 背景色 */
+  --background-primary: #ffffff;
+  --background-secondary: #f7f7f8;
+
+  /* 罫線 */
+  --border-secondary: #bcbcbc;
+
+  /* バリデーション */
+  --invalid-color: #d30038;
+  --valid-color: #007936;
+
+  /* ボタン：hover 色は color-mix() で基本色から自動生成する */
+  --button-primary-default: #1b1b1b;
+  --button-primary-hover: color-mix(in srgb, var(--button-primary-default), white 30%);
+  --button-secondary-default: #ecf4fe;
+  --button-secondary-hover: color-mix(in srgb, var(--button-secondary-default), black 8%);
+
+  /* フォント */
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", "Hiragino Sans",
+    "Noto Sans JP", Meiryo, sans-serif;
+
+  /* 角丸 */
+  --elem-radius: 0.25rem; /* ボタン・ナビ用（4px） */
+  --card-radius: 0.5rem; /* カード用（8px） */
+}
+
+/* ==========================================================
+   基本設定（リセットは destyle.css が担当）
+   ========================================================== */
+body {
+  font-family: var(--font-body);
+  /* 本家 MDN と同じ Inter の判別用字形（l に足が付くなど）を有効化 */
+  font-feature-settings: "ss02";
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--text-primary);
+  background-color: var(--background-primary);
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: var(--text-link);
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+/* 中央寄せの共通コンテナ */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* ==========================================================
+   ヘッダー
+   ========================================================== */
+.site-header {
+  border-bottom: 1px solid var(--border-secondary);
+  background-color: var(--background-primary);
+}
+
+.header-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 2rem;
+  padding-top: 0.8rem;
+  padding-bottom: 0.8rem;
+}
+
+.logo {
+  display: flex; /* SVG 下の余分なすき間をなくす */
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+/* メニュー項目：ホバーでボックス状の背景色がつく */
+.nav-list {
+  display: flex;
+  flex-wrap: wrap;
+
+  & a {
+    display: block;
+    padding: 0.5rem 0.75rem;
+    border-radius: var(--elem-radius);
+    font-weight: 500;
+    color: var(--text-primary);
+
+    &:hover {
+      background-color: var(--button-secondary-default);
+      text-decoration: none;
+    }
+
+    &:active {
+      background-color: var(--button-secondary-hover);
+    }
+  }
+}
+
+/* ==========================================================
+   サブ・ヘッダー（薄いグレーの帯）
+   ========================================================== */
+.sub-header {
+  background-color: var(--background-secondary);
+  border-bottom: 1px solid var(--border-secondary);
+}
+
+.sub-header-inner {
+  padding-top: 0.2rem;
+  padding-bottom: 0.2rem;
+}
+
+.breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+
+  /* 2 つ目以降の項目の前に区切り記号を入れる */
+  & li + li::before {
+    content: "›";
+    margin-right: 0.5rem;
+    color: var(--text-inactive);
+  }
+
+  & a {
+    color: var(--text-secondary);
+
+    &:hover {
+      color: var(--text-link);
+    }
+  }
+}
+
+/* ==========================================================
+   ページ見出しとリード文
+   ========================================================== */
+.page-title {
+  margin-block: clamp(3rem, 6vw, 4rem) 1rem;
+  font-size: clamp(2rem, 1.5rem + 2vw, 2.5rem);
+  font-weight: 500;
+  text-align: center;
+}
+
+.form-lead {
+  max-width: 640px;
+  margin: 0 auto 2.5rem;
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+/* ==========================================================
+   お問い合わせフォーム
+   ========================================================== */
+.contact-form {
+  display: grid;
+  gap: 1.5rem;
+  max-width: 640px;
+  margin: 0 auto 4rem;
+
+  /* チェックボックス・ラジオをブランドカラーに（1 行のテーマ設定） */
+  accent-color: var(--text-link);
+
+  /* ラベルと入力欄のひとまとまり */
+  & .field {
+    display: grid;
+    gap: 0.4rem;
+  }
+
+  & label,
+  & legend {
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  /* 必須項目のラベルに自動で * を付ける（:has で「必須の欄を持つ field」を親側から選ぶ） */
+  & .field:has(:required) > label::after {
+    content: " *";
+    color: var(--invalid-color);
+  }
+
+  /* destyle.css がフォーム部品の見た目を完全にリセットしているので、
+     入力欄の枠線・余白は自分でデザインする */
+  & input[type="text"],
+  & input[type="email"],
+  & select,
+  & textarea {
+    width: 100%;
+    padding: 0.6rem 0.8rem;
+    border: 1px solid var(--border-secondary);
+    border-radius: var(--elem-radius);
+    background-color: var(--background-primary);
+  }
+
+  & textarea {
+    resize: vertical; /* 縦方向のみリサイズ可能に */
+  }
+
+  /* キーボード操作時のフォーカスリング */
+  & :is(input, select, textarea):focus-visible {
+    outline: 2px solid var(--text-link);
+    outline-offset: 2px;
+  }
+
+  /* :user-invalid：「ユーザーが一度さわったのに不正なまま」の欄だけ赤くする。
+     :invalid だと開いた瞬間から必須欄がすべて赤くなってしまう */
+  & :is(input, select, textarea):user-invalid {
+    border-color: var(--invalid-color);
+  }
+
+  & :is(input, select, textarea):user-valid {
+    border-color: var(--valid-color);
+  }
+
+  /* ラジオボタンの横並び */
+  & .radio-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.5rem;
+
+    & label {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-weight: 400;
+    }
+  }
+
+  /* チェックボックスの行 */
+  & .checkbox-field label {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-weight: 400;
+  }
+
+  /* エラーメッセージ：ふだんは隠し、:user-invalid の欄の下でだけ表示 */
+  & .hint {
+    display: none;
+    font-size: 0.8rem;
+    color: var(--invalid-color);
+  }
+
+  & :user-invalid ~ .hint {
+    display: block;
+  }
+
+  /* 送信ボタン */
+  & .submit-button {
+    justify-self: end;
+    padding: 0.6rem 1.5rem;
+    border-radius: var(--elem-radius);
+    background-color: var(--button-primary-default);
+    color: var(--background-primary);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: var(--button-primary-hover);
+    }
+  }
+
+  /* フォームに不正な欄が残っている間は送信ボタンを弱く見せる
+     （見た目だけの合図。CSS では本当に無効化はできない） */
+  &:invalid .submit-button {
+    opacity: 0.5;
+  }
+}
+
+/* ==========================================================
+   フッター（簡易版）
+   ========================================================== */
+.site-footer {
+  border-top: 1px solid var(--border-secondary);
+  background-color: var(--background-secondary);
+  padding: 2.5rem 0 1.5rem;
+}
+
+.footer-logo {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+.footer-tagline {
+  margin: 0.5rem 0 0;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.copyright {
+  max-width: 1200px;
+  margin: 2rem auto 0;
+  padding: 1.5rem 1rem 0;
+  border-top: 1px solid var(--border-secondary);
+  font-size: 0.8rem;
+  color: var(--text-inactive);
+}

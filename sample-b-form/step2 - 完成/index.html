@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>お問い合わせ — MDN</title>
+
+    <link rel="preconnect" href="https://rsms.me/" />
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/destyle.css@4.0.1/destyle.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <!-- ============ ヘッダー（基礎編と共通） ============ -->
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="logo" href="#">
+          <svg width="83" height="24" viewBox="0 0 83 24" role="img">
+            <title>MDN</title>
+            <path d="M9.4 0 2.81 21.17H.12L6.69 0H9.4Zm2.38 0v21.17H9.4V0h2.4Zm9.27 0-6.56 21.17H11.8L18.36 0h2.69Zm2.39 0v21.17h-2.4V0h2.4Z" fill="#0a5dbd"></path>
+            <path d="M45.55 16.83h-3.93v-1.27h.87v-3.63c0-.85-.16-1.45-.48-1.82a1.65 1.65 0 0 0-1.3-.52c-.74 0-1.3.25-1.66.78a2.98 2.98 0 0 0-.58 1.58v3.59h1.38v1.26h-3.93v-1.26h.87v-3.6c0-.88-.16-1.48-.48-1.83a1.7 1.7 0 0 0-1.29-.52 1.93 1.93 0 0 0-1.65.75 2.85 2.85 0 0 0-.58 1.6v3.62h1.59v1.27h-4.64v-1.27h1.37V9.75h-1.4V8.46h3.08v1.47c.28-.48.62-.87 1.08-1.2a3 3 0 0 1 1.68-.45c.67 0 1.22.16 1.73.48.5.32.85.8 1.03 1.47.25-.57.62-1.03 1.13-1.4.5-.37 1.1-.55 1.81-.55.8 0 1.5.25 2.05.75.55.51.85 1.3.85 2.35v4.18h1.4v1.27Zm9.77 0H52.3v-1.66c-.27.51-.66.95-1.13 1.29-.56.4-1.23.59-1.9.55-1.11 0-2-.37-2.67-1.12a4.41 4.41 0 0 1-1-3.06c0-1.15.3-2.2.93-3.15.6-.94 1.58-1.43 2.94-1.43 1.36 0 2.25.5 2.83 1.5V5.22h-2V3.93h3.63v11.63h1.38v1.27Zm-3.06-3.86v-1.02a2.28 2.28 0 0 0-.73-1.67 2.4 2.4 0 0 0-1.66-.65 2.18 2.18 0 0 0-1.88.9 3.63 3.63 0 0 0-.65 2.2c0 .95.23 1.68.7 2.19.45.5 1.03.76 1.7.76.73 0 1.33-.3 1.79-.88.48-.6.71-1.21.73-1.83Zm14.14 3.86h-4.43v-1.27h1.37v-3.63c0-.85-.16-1.45-.5-1.82a1.68 1.68 0 0 0-1.31-.52c-.71 0-1.29.23-1.7.69a2.52 2.52 0 0 0-.67 1.6v3.66h1.38v1.26H56.1v-1.26h1.38v-5.8h-1.42V8.47h3.12V9.9c.6-1.06 1.57-1.6 2.92-1.6.83 0 1.54.26 2.12.77.57.5.85 1.28.85 2.34v4.19h1.38v1.24h-.05Z"></path>
+            <path d="M67.71 21.98H83V24H67.71v-2.02Z" fill="#0a5dbd"></path>
+          </svg>
+        </a>
+
+        <nav class="global-nav" aria-label="メインメニュー">
+          <ul class="nav-list">
+            <li><a href="#">HTML</a></li>
+            <li><a href="#">CSS</a></li>
+            <li><a href="#">JS</a></li>
+            <li><a href="#">Web APIs</a></li>
+            <li><a href="#">All</a></li>
+            <li><a href="#">Learn</a></li>
+            <li><a href="#">Tools</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Blog</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <!-- ============ サブ・ヘッダー（薄いグレーの帯） ============ -->
+    <nav class="sub-header" aria-label="パンくずリスト">
+      <div class="container sub-header-inner">
+        <ol class="breadcrumb">
+          <li><a href="#">MDN</a></li>
+          <li><a href="#" aria-current="page">お問い合わせ</a></li>
+        </ol>
+      </div>
+    </nav>
+
+    <!-- ============ メイン ============ -->
+    <main class="container">
+      <h1 class="page-title">お問い合わせ</h1>
+      <p class="form-lead">
+        MDN Web Docs へのご意見・ご報告はこちらのフォームからお送りください。
+        <strong>*</strong> の付いた項目は必須です。
+      </p>
+
+      <form class="contact-form" action="#" method="post">
+        <!-- テキスト入力 -->
+        <div class="field">
+          <label for="name">お名前</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            required
+            autocomplete="name"
+          />
+          <p class="hint">お名前を入力してください。</p>
+        </div>
+
+        <!-- メールアドレス（type="email" で形式チェックが働く） -->
+        <div class="field">
+          <label for="email">メールアドレス</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            required
+            autocomplete="email"
+            placeholder="you@example.com"
+          />
+          <p class="hint">メールアドレスの形式が正しくありません。</p>
+        </div>
+
+        <!-- セレクトボックス -->
+        <div class="field">
+          <label for="topic">お問い合わせの種類</label>
+          <select id="topic" name="topic" required>
+            <option value="">選択してください</option>
+            <option value="error">ドキュメントの誤りの報告</option>
+            <option value="proposal">新しい記事の提案</option>
+            <option value="other">その他</option>
+          </select>
+          <p class="hint">お問い合わせの種類を選択してください。</p>
+        </div>
+
+        <!-- ラジオボタン（関連する選択肢は fieldset + legend でグループ化） -->
+        <fieldset class="field radio-field">
+          <legend>返信の希望</legend>
+          <div class="radio-group">
+            <label>
+              <input type="radio" name="reply" value="yes" checked />
+              返信を希望する
+            </label>
+            <label>
+              <input type="radio" name="reply" value="no" />
+              返信は不要
+            </label>
+          </div>
+        </fieldset>
+
+        <!-- チェックボックス（任意項目） -->
+        <div class="field checkbox-field">
+          <label>
+            <input type="checkbox" name="newsletter" />
+            MDN のニュースレターを購読する（任意）
+          </label>
+        </div>
+
+        <!-- 複数行テキスト -->
+        <div class="field">
+          <label for="message">メッセージ</label>
+          <textarea
+            id="message"
+            name="message"
+            rows="6"
+            required
+            minlength="10"
+          ></textarea>
+          <p class="hint">メッセージを 10 文字以上で入力してください。</p>
+        </div>
+
+        <button class="submit-button" type="submit">送信する</button>
+      </form>
+    </main>
+
+    <!-- ============ フッター（簡易版） ============ -->
+    <footer class="site-footer">
+      <div class="container">
+        <p class="footer-logo">MDN</p>
+        <p class="footer-tagline">Your blueprint for a better internet.</p>
+      </div>
+      <p class="copyright">
+        MDN Web Docs のデザインを参考に作成したチュートリアルページです。
+      </p>
+    </footer>
+  </body>
+</html>

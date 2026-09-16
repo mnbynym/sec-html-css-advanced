@@ -1,0 +1,475 @@
+/* ==========================================================
+   デザイントークン（カスタムプロパティ）
+   ========================================================== */
+:root {
+  /* 文字色 */
+  --text-primary: #1b1b1b;
+  --text-secondary: #4e4e4e;
+  --text-inactive: #9c9c9c;
+  --text-link: #0069c2;
+
+  /* 背景色 */
+  --background-primary: #ffffff;
+  --background-secondary: #f7f7f8;
+
+  /* 罫線 */
+  --border-secondary: #bcbcbc;
+
+  /* ボタン：hover 色は color-mix() で基本色から自動生成する */
+  --button-primary-default: #1b1b1b;
+  --button-primary-hover: color-mix(in srgb, var(--button-primary-default), white 30%);
+  --button-secondary-default: #ecf4fe;
+  --button-secondary-hover: color-mix(in srgb, var(--button-secondary-default), black 8%);
+
+  /* フォント */
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", "Hiragino Sans",
+    "Noto Sans JP", Meiryo, sans-serif;
+
+  /* 角丸 */
+  --elem-radius: 0.25rem; /* ボタン・ナビ用（4px） */
+  --card-radius: 0.5rem; /* カード用（8px） */
+}
+
+/* ==========================================================
+   基本設定（リセットは destyle.css が担当）
+   ========================================================== */
+body {
+  font-family: var(--font-body);
+  /* 本家 MDN と同じ Inter の判別用字形（l に足が付くなど）を有効化 */
+  font-feature-settings: "ss02";
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--text-primary);
+  background-color: var(--background-primary);
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: var(--text-link);
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+/* 中央寄せの共通コンテナ */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* ==========================================================
+   ヘッダー（スクロールしても上部に張り付く）
+   ========================================================== */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10; /* 後続コンテンツより手前に重ねる */
+  border-bottom: 1px solid var(--border-secondary);
+  background-color: var(--background-primary);
+}
+
+.header-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 2rem;
+  padding-top: 0.8rem;
+  padding-bottom: 0.8rem;
+}
+
+.logo {
+  display: flex; /* SVG 下の余分なすき間をなくす */
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+/* メニュー項目：ホバーでボックス状の背景色がつく */
+.nav-list {
+  display: flex;
+  flex-wrap: wrap;
+
+  & a {
+    display: block;
+    padding: 0.5rem 0.75rem;
+    border-radius: var(--elem-radius);
+    font-weight: 500;
+    color: var(--text-primary);
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: var(--button-secondary-default);
+      text-decoration: none;
+    }
+
+    &:active {
+      background-color: var(--button-secondary-hover);
+    }
+  }
+
+  & .is-current {
+    background-color: var(--button-secondary-default);
+    font-weight: 600;
+  }
+}
+
+/* ==========================================================
+   サブ・ヘッダー（薄いグレーの帯）
+   ========================================================== */
+.sub-header {
+  background-color: var(--background-secondary);
+  border-bottom: 1px solid var(--border-secondary);
+}
+
+.sub-header-inner {
+  padding-top: 0.2rem;
+  padding-bottom: 0.2rem;
+}
+
+.breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+
+  /* 2 つ目以降の項目の前に区切り記号を入れる */
+  & li + li::before {
+    content: "›";
+    margin-right: 0.5rem;
+    color: var(--text-inactive);
+  }
+
+  & a {
+    color: var(--text-secondary);
+
+    &:hover {
+      color: var(--text-link);
+    }
+  }
+}
+
+/* ==========================================================
+   ページ見出し
+   ========================================================== */
+.page-title {
+  /* clamp(最小, 推奨, 最大)：メディアクエリなしで画面幅に応じてなめらかに変わる */
+  margin-block: clamp(3rem, 6vw, 4rem);
+  font-size: clamp(2.5rem, 1.75rem + 2.5vw, 3rem);
+  font-weight: 500;
+  text-align: center;
+  /* ページ表示時にふわっと現れる */
+  animation: fade-up 0.6s ease-out both;
+}
+
+/* ==========================================================
+   著者情報の行（カードと記事ページで共通）
+   ========================================================== */
+.post-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 0.7rem;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+
+  & .avatar {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  & .author {
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  & .readtime {
+    color: var(--text-inactive);
+  }
+}
+
+/* ==========================================================
+   記事カード（サブグリッド + コンテナクエリ）
+   ========================================================== */
+.post {
+  /* サブグリッド：画像 / タイトル / 著者情報 / 要約 / ボタンの 5 行を
+     親グリッド（.post-list）と共有する。横に並んだカード同士で
+     「タイトルが 2 行のカード」があっても各行の高さが揃う */
+  grid-row: span 5;
+  display: grid;
+  grid-template-rows: subgrid;
+  row-gap: 0; /* カード内部では親の gap を引き継がない */
+
+  /* このカード自身の幅を基準にするコンテナクエリの宣言 */
+  container-type: inline-size;
+
+  border: 1px solid var(--border-secondary);
+  border-radius: var(--card-radius);
+  overflow: hidden;
+  background-color: var(--background-primary);
+
+  /* ホバーで浮き上がる（translate は transform の個別プロパティ版） */
+  transition: translate 0.2s, box-shadow 0.2s;
+
+  &:hover {
+    translate: 0 -4px;
+    box-shadow: 0 8px 16px rgb(0 0 0 / 0.12);
+  }
+
+  & .post-image {
+    width: 100%;
+    aspect-ratio: 2 / 1;
+    object-fit: cover;
+    background-color: var(--background-secondary);
+  }
+
+  & .post-body {
+    /* 本文側も subgrid にして、内側 4 行を同じ行定義に参加させる */
+    grid-row: span 4;
+    display: grid;
+    grid-template-rows: subgrid;
+    row-gap: 0;
+    padding: 1.2rem;
+  }
+
+  & .post-title {
+    margin: 0 0 0.7rem;
+    font-size: 1.25rem;
+    font-weight: 700; /* destyle.css で消えた見出しの太さを付け直す */
+    line-height: 1.3;
+
+    /* ビューポートではなく「カードの幅」が 420px 以上のときだけ拡大 */
+    @container (min-width: 420px) {
+      font-size: 1.4rem;
+    }
+  }
+
+  & .post-summary {
+    margin: 0 0 1.2rem;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+
+    @container (min-width: 420px) {
+      font-size: 0.9rem;
+    }
+  }
+
+  /* Read more：リンクをボタンの見た目にする */
+  & .read-more {
+    justify-self: end; /* グリッドセル内で右寄せ（旧 align-self + margin-top: auto の置き換え） */
+    align-self: end;
+    padding: 0.5rem 1rem;
+    border-radius: var(--elem-radius);
+    background-color: var(--button-primary-default);
+    color: var(--background-primary);
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: var(--button-primary-hover);
+      text-decoration: none;
+    }
+  }
+}
+
+/* ==========================================================
+   記事一覧（RAM パターンのグリッド）
+   ========================================================== */
+.post-list {
+  display: grid;
+  /* repeat(auto-fit, minmax(...))：入るだけ列を作り、入らなければ折り返す。
+     Step 1 までのメディアクエリ 2 つがこの 1 行で置き換わる */
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 4rem;
+}
+
+/* ==========================================================
+   記事ページ（article.html）
+   ========================================================== */
+.article {
+  max-width: 720px;
+  margin: 0 auto 4rem;
+
+  & .article-title {
+    margin-block: clamp(2rem, 5vw, 3rem) 1rem;
+    font-size: clamp(1.75rem, 1.25rem + 2vw, 2.5rem);
+    font-weight: 600;
+    line-height: 1.25;
+    animation: fade-up 0.6s ease-out both;
+  }
+
+  & .article-image {
+    width: 100%;
+    aspect-ratio: 2 / 1;
+    object-fit: cover;
+    margin-block: 1.5rem;
+    border-radius: var(--card-radius);
+  }
+
+  & p {
+    margin-bottom: 1rem; /* destyle.css で消えた段落の余白を付け直す */
+  }
+
+  & .back-link {
+    display: inline-block;
+    margin-top: 1.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: var(--elem-radius);
+    background-color: var(--button-primary-default);
+    color: var(--background-primary);
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: var(--button-primary-hover);
+      text-decoration: none;
+    }
+  }
+}
+
+/* ==========================================================
+   フッター
+   ========================================================== */
+.site-footer {
+  border-top: 1px solid var(--border-secondary);
+  background-color: var(--background-secondary);
+  padding: 2.5rem 0 1.5rem;
+}
+
+.footer-inner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (min-width: 1024px) {
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+  }
+}
+
+.footer-logo {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+.footer-tagline {
+  margin: 0.5rem 0 0;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+/* :has()：列の中のリンクにホバーしたら「親をさかのぼって」列見出しの色を変える */
+.footer-col {
+  &:has(a:hover) .footer-heading {
+    color: var(--text-link);
+  }
+}
+
+.footer-heading {
+  margin: 0 0 0.7rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.footer-list {
+  display: grid;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+
+  & a {
+    color: var(--text-secondary);
+
+    &:hover {
+      color: var(--text-link);
+    }
+  }
+}
+
+.copyright {
+  max-width: 1200px;
+  margin: 2rem auto 0;
+  padding: 1.5rem 1rem 0;
+  border-top: 1px solid var(--border-secondary);
+  font-size: 0.8rem;
+  color: var(--text-inactive);
+}
+
+/* ==========================================================
+   アニメーション定義
+   ========================================================== */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    translate: 0 1rem;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes card-in {
+  from {
+    opacity: 0;
+    scale: 0.95;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+/* スクロール連動アニメーション：カードが画面に入るのに合わせてフェードイン。
+   未対応ブラウザでは何も起きないように @supports で囲む */
+@supports (animation-timeline: view()) {
+  .post {
+    animation: card-in linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 40%;
+  }
+}
+
+/* ==========================================================
+   View Transitions（ページ間のなめらかな遷移）
+   ========================================================== */
+/* 同一オリジン内のページ移動でクロスフェードを有効化（MPA でも CSS だけで動く） */
+@view-transition {
+  navigation: auto;
+}
+
+/* 一覧のカード画像と記事ページの画像を「同一の要素」として繋ぐ */
+.vt-featured {
+  view-transition-name: featured-post;
+}
+
+/* ==========================================================
+   アクセシビリティ：動きを減らす設定のユーザーへの配慮
+   ========================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  @view-transition {
+    navigation: none;
+  }
+}
