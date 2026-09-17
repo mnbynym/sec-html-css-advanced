@@ -4,6 +4,8 @@
 モダン CSS / 高度なレイアウト / アニメーション / Web フォームを学ぶ。
 **JavaScript は使わない**（最新の CSS と HTML の標準機能だけでどこまでできるかを体験する）。
 
+[補足資料（Notionページ）](https://app.notion.com/p/HTML5-CSS-3a72223da4bd808e877cd706f9898599?source=copy_link)
+
 ## 前提
 
 - 基礎編を修了していること（デザイントークン / Flexbox / Grid / メディアクエリを使えること）
